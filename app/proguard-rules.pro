@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# 1. Сохраняем отладочные метаданные и номера строк по ТЗ (для деобфусцирующего mapping)
+-keepattributes SourceFile,LineNumberTable
+
+# 2. Защищаем модели данных ИИ и Room от изменения имен полей (чтобы работал парсинг JSON)
+-keepclassmembers class com.example.nutribalance.core.data.remote.** { *; }
+-keepclassmembers class com.example.nutribalance.core.domain.model.** { *; }
+
+# 3. Базовые правила для корректной работы Hilt и Room в релизе
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+-dontwarn com.google.dagger.hilt.**
+-dontwarn androidx.room.**
