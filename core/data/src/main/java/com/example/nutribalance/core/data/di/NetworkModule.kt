@@ -35,7 +35,8 @@ object NetworkModule {
         val certInputStream: InputStream = context.resources.openRawResource(
             context.resources.getIdentifier("russian_trusted_root_ca", "raw", context.packageName)
         )
-        val ca: X509Certificate = certInputStream.use { cf.generateCertificate(it) as X509Certificate }
+        val ca: X509Certificate =
+            certInputStream.use { cf.generateCertificate(it) as X509Certificate }
 
         val keyStoreType = KeyStore.getDefaultType()
         val keyStore = KeyStore.getInstance(keyStoreType).apply {
@@ -60,7 +61,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         @ApplicationContext context: Context,
-        sslPair: Pair<SSLContext, X509TrustManager>,
+        // Добавил аннотацию перед аргументом sslPair,
+        // чтобы запретить Kotlin генерировать скрытые ? extends знаки (чтобы Hilt мог сопоставить зависимости)
+        sslPair: @JvmSuppressWildcards Pair<SSLContext, X509TrustManager>,
         @Named("AuthApi") authApi: GigaChatAuthApi
     ): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
@@ -77,7 +80,9 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("AuthRetrofit")
-    fun provideAuthRetrofit(sslPair: Pair<SSLContext, X509TrustManager>): Retrofit {
+    fun provideAuthRetrofit(
+        sslPair: @JvmSuppressWildcards Pair<SSLContext, X509TrustManager>
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://sberbank.ru") // Эндпоинт авторизации Сбера
             .addConverterFactory(GsonConverterFactory.create())
@@ -99,7 +104,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideGigaChatContentApi(
-        sslPair: Pair<SSLContext, X509TrustManager>,
+        sslPair: @JvmSuppressWildcards Pair<SSLContext, X509TrustManager>,
         client: OkHttpClient
     ): GigaChatContentApi {
         return Retrofit.Builder()

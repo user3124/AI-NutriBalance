@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Nutribalance" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme (Использован заглавный регистр по ТЗ) -->
+    <style name="Base.Theme.NutriBalance" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Сюда при желании можно добавлять свои кастомные цвета -->
     </style>
 
-    <style name="Theme.Nutribalance" parent="Base.Theme.Nutribalance" />
+    <style name="Theme.NutriBalance" parent="Base.Theme.NutriBalance" />
 </resources>
