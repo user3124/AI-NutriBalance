@@ -38,16 +38,20 @@ class StepCounterService : Service(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER) {
+        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER && event.values.isNotEmpty()) {
+            // Берем первый элемент массива Float и приводим его к Int
+            val currentSensorValue = event.values[0].toInt()
+
             if (totalSteps == 0) {
-                totalSteps = event.values.toInt()
+                totalSteps = currentSensorValue
             }
-            val stepsSinceStart = event.values.toInt() - totalSteps
+            val stepsSinceStart = currentSensorValue - totalSteps
 
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(NOTIFICATION_ID, buildNotification(stepsSinceStart))
         }
     }
+
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
