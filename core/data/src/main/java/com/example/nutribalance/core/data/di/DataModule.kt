@@ -6,6 +6,9 @@ import com.example.nutribalance.core.data.local.AppDatabase
 import com.example.nutribalance.core.data.local.MealDao
 import com.example.nutribalance.core.data.local.MealRepositoryImpl
 import com.example.nutribalance.core.data.mapper.MealMapper
+import com.example.nutribalance.core.data.remote.AiRepositoryImpl
+import com.example.nutribalance.core.data.remote.GigaChatContentApi
+import com.example.nutribalance.core.domain.repository.AiRepository
 import com.example.nutribalance.core.domain.repository.MealRepository
 import dagger.Module
 import dagger.Provides
@@ -40,5 +43,11 @@ object DataModule {
     @Singleton
     fun provideMealRepository(mealDao: MealDao, mapper: MealMapper): MealRepository {
         return MealRepositoryImpl(mealDao, mapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiRepository(contentApi: GigaChatContentApi): AiRepository {
+        return AiRepositoryImpl(contentApi)
     }
 }
